@@ -156,7 +156,6 @@ function renderOrder(order) {
     <div class="meta-grid">
       <div class="meta"><span>Client</span><strong>${safe(order.clientName)}</strong></div>
       <div class="meta"><span>Country</span><strong>${safe(order.country)}</strong></div>
-      <div class="meta"><span>Phone/WhatsApp</span><strong>${safe(order.phoneWhatsapp || "Hidden")}</strong></div>
       <div class="meta"><span>Video length</span><strong>${safe(order.videoLength)}</strong></div>
       <div class="meta"><span>Amount</span><strong>${safe(order.amount)}</strong></div>
       <div class="meta"><span>Payment</span><strong>${safe(order.paymentStatus)}</strong></div>
