@@ -1,7 +1,7 @@
 // Edit this file to update client order statuses.
 // Later, we can connect this to Google Sheets, Airtable, Firebase, or Supabase.
 
-const ORDERS = [
+window.ORDERS = [
   {
     orderId: "SIN-0001",
     clientName: "Demo Client",
