@@ -74,9 +74,10 @@ function parseCsv(csv) {
 
 function rowToOrder(headers, row) {
   const record = Object.fromEntries(headers.map((header, index) => [header.trim(), row[index] || ""]));
+  const orderIdHeader = headers.find(header => normalize(header).includes("ORDER ID")) || "Order ID";
 
   return {
-    orderId: record["Order ID"],
+    orderId: record[orderIdHeader],
     clientName: record["Client name"],
     country: record["Country"],
     phoneWhatsapp: record["Phone/WhatsApp"],
@@ -105,7 +106,7 @@ async function loadOrdersFromSheet() {
 
     const csv = await response.text();
     const rows = parseCsv(csv);
-    const headerIndex = rows.findIndex(row => normalize(row[0]) === "ORDER ID");
+    const headerIndex = rows.findIndex(row => normalize(row[0]).includes("ORDER ID"));
     if (headerIndex === -1) throw new Error("Order ID header row not found");
 
     const headers = rows[headerIndex];
