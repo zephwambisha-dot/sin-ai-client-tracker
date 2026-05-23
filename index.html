@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIN AI Project Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="badge">SIN AI</div>
+      <h1>Project Status Tracker</h1>
+      <p>Enter your Order ID to check the current status of your AI video project.</p>
+    </section>
+
+    <section class="card search-card">
+      <label for="orderId">Order ID</label>
+      <div class="search-row">
+        <input id="orderId" type="text" placeholder="Example: SIN-0001" autocomplete="off" />
+        <button id="checkBtn">Check Status</button>
+      </div>
+      <p class="hint">Your Order ID is sent to you after payment confirmation.</p>
+    </section>
+
+    <section id="result" class="card result-card hidden" aria-live="polite"></section>
+
+    <section class="card contact-card">
+      <h2>Need help?</h2>
+      <p>If your status has not changed for a while, contact SIN AI support with your Order ID.</p>
+      <a class="whatsapp" href="https://wa.me/" target="_blank" rel="noreferrer">Contact on WhatsApp</a>
+    </section>
+  </main>
+
+  <script src="orders.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
