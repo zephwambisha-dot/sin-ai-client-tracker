@@ -21,7 +21,8 @@ const input = document.querySelector("#orderId");
 const button = document.querySelector("#checkBtn");
 const result = document.querySelector("#result");
 
-let orders = Array.isArray(window.ORDERS) ? window.ORDERS : [];
+const fallbackOrders = Array.isArray(window.ORDERS) ? window.ORDERS : [];
+let orders = [...fallbackOrders];
 let sheetLoaded = false;
 
 function normalize(value) {
@@ -108,14 +109,17 @@ async function loadOrdersFromSheet() {
     if (headerIndex === -1) throw new Error("Order ID header row not found");
 
     const headers = rows[headerIndex];
-    orders = rows
+    const sheetOrders = rows
       .slice(headerIndex + 1)
       .map(row => rowToOrder(headers, row))
       .filter(order => order.orderId);
 
+    if (!sheetOrders.length) throw new Error("Google Sheet has no orders yet");
+    orders = sheetOrders;
     sheetLoaded = true;
   } catch (error) {
     console.warn("Using local fallback orders because Google Sheets could not load:", error);
+    orders = [...fallbackOrders];
     sheetLoaded = true;
   }
 }
