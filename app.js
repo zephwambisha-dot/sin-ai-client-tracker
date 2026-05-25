@@ -38,6 +38,23 @@ function safe(value) {
   }[char]));
 }
 
+function display(value, fallback = "Not set") {
+  const text = String(value || "").trim();
+  return text ? text : fallback;
+}
+
+function safeUrl(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+
+  try {
+    const url = new URL(text, window.location.href);
+    return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
 function parseCsv(csv) {
   const rows = [];
   let row = [];
@@ -141,31 +158,34 @@ function renderLoading() {
 }
 
 function renderOrder(order) {
-  const progress = statusProgress(order.status);
-  const currentIndex = stages.indexOf(order.status);
+  const status = display(order.status, "Status pending");
+  const progress = statusProgress(status);
+  const currentIndex = stages.indexOf(status);
+  const previewLink = safeUrl(order.previewLink);
+  const finalLink = safeUrl(order.finalLink);
 
   result.classList.remove("hidden");
   result.innerHTML = `
     <div class="status-header">
       <div>
-        <h2>${safe(order.businessName)}</h2>
+        <h2>${safe(display(order.businessName, "SIN AI project"))}</h2>
         <p>Order ID: <strong>${safe(order.orderId)}</strong></p>
       </div>
-      <div class="status-pill">${safe(order.status)}</div>
+      <div class="status-pill">${safe(status)}</div>
     </div>
 
     <div class="meta-grid">
-      <div class="meta"><span>Client</span><strong>${safe(order.clientName)}</strong></div>
-      <div class="meta"><span>Country</span><strong>${safe(order.country)}</strong></div>
-      <div class="meta"><span>Video length</span><strong>${safe(order.videoLength)}</strong></div>
-      <div class="meta"><span>Amount</span><strong>${safe(order.amount)}</strong></div>
-      <div class="meta"><span>Payment</span><strong>${safe(order.paymentStatus)}</strong></div>
-      <div class="meta"><span>Date paid</span><strong>${safe(order.datePaid || "Not paid yet")}</strong></div>
-      <div class="meta"><span>Deadline</span><strong>${safe(order.deadline || "Not set")}</strong></div>
-      <div class="meta"><span>Queue number</span><strong>${safe(order.queueNumber)}</strong></div>
-      <div class="meta"><span>Estimated delivery</span><strong>${safe(order.estimatedDelivery)}</strong></div>
-      <div class="meta"><span>Revision used?</span><strong>${safe(order.revisionUsed || "No")}</strong></div>
-      <div class="meta"><span>Notes</span><strong>${safe(order.notes || "No extra notes.")}</strong></div>
+      <div class="meta"><span>Client</span><strong>${safe(display(order.clientName))}</strong></div>
+      <div class="meta"><span>Country</span><strong>${safe(display(order.country))}</strong></div>
+      <div class="meta"><span>Video length</span><strong>${safe(display(order.videoLength))}</strong></div>
+      <div class="meta"><span>Amount</span><strong>${safe(display(order.amount))}</strong></div>
+      <div class="meta"><span>Payment</span><strong>${safe(display(order.paymentStatus, "Payment pending"))}</strong></div>
+      <div class="meta"><span>Date paid</span><strong>${safe(display(order.datePaid, "Not paid yet"))}</strong></div>
+      <div class="meta"><span>Deadline</span><strong>${safe(display(order.deadline))}</strong></div>
+      <div class="meta"><span>Queue number</span><strong>${safe(display(order.queueNumber))}</strong></div>
+      <div class="meta"><span>Estimated delivery</span><strong>${safe(display(order.estimatedDelivery))}</strong></div>
+      <div class="meta"><span>Revision used?</span><strong>${safe(display(order.revisionUsed, "No"))}</strong></div>
+      <div class="meta"><span>Notes</span><strong>${safe(display(order.notes, "No extra notes."))}</strong></div>
     </div>
 
     <div class="progress">
@@ -173,14 +193,14 @@ function renderOrder(order) {
       <ul class="steps">
         ${stages.map((stage, index) => {
           const className = index < currentIndex ? "done" : index === currentIndex ? "current" : "";
-          const icon = index < currentIndex ? "✓" : index === currentIndex ? "●" : "○";
+          const icon = index < currentIndex ? "âœ“" : index === currentIndex ? "â—" : "â—‹";
           return `<li class="${className}">${icon} ${safe(stage)}</li>`;
         }).join("")}
       </ul>
     </div>
 
-    ${order.previewLink ? `<p><a class="whatsapp" href="${safe(order.previewLink)}" target="_blank" rel="noreferrer">View Preview</a></p>` : ""}
-    ${order.finalLink ? `<p><a class="whatsapp" href="${safe(order.finalLink)}" target="_blank" rel="noreferrer">Download Final Video</a></p>` : ""}
+    ${previewLink ? `<p><a class="whatsapp" href="${safe(previewLink)}" target="_blank" rel="noreferrer">View Preview</a></p>` : ""}
+    ${finalLink ? `<p><a class="whatsapp" href="${safe(finalLink)}" target="_blank" rel="noreferrer">Download Final Video</a></p>` : ""}
   `;
 }
 
