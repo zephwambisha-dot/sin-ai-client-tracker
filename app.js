@@ -142,8 +142,24 @@ async function loadOrdersFromSheet() {
   }
 }
 
-function findOrder(orderId) {
-  return orders.find(order => normalize(order.orderId) === normalize(orderId));
+function digitsOnly(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+function findOrder(query) {
+  const normalizedQuery = normalize(query);
+  const queryDigits = digitsOnly(query);
+
+  return orders.find(order => {
+    const orderIdMatches = normalize(order.orderId) === normalizedQuery;
+    const phoneDigits = digitsOnly(order.phoneWhatsapp);
+    const phoneMatches = queryDigits && phoneDigits && (
+      phoneDigits.endsWith(queryDigits) ||
+      queryDigits.endsWith(phoneDigits)
+    );
+
+    return orderIdMatches || phoneMatches;
+  });
 }
 
 function statusProgress(status) {
