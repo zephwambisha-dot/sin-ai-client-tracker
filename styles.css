@@ -240,9 +240,35 @@ button:hover, .whatsapp:hover { transform: translateY(-1px); box-shadow: 0 14px 
 .progress-track { height: 9px; background: rgba(17,17,15,.09); border-radius: 99px; overflow: hidden; }
 .progress-bar { height: 100%; background: linear-gradient(90deg, #11110f, #766b5c); border-radius: 99px; }
 .steps { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-.steps li { color: var(--muted); }
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+}
+.step-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-size: 13px;
+  line-height: 1;
+}
 .steps li.done { color: var(--success); }
+.steps li.done .step-icon {
+  color: #fffaf0;
+  background: var(--success);
+  border-color: var(--success);
+}
 .steps li.current { color: var(--ink); font-weight: 800; }
+.steps li.current .step-icon {
+  color: #fffaf0;
+  background: var(--ink);
+  border-color: var(--ink);
+}
 .error { color: var(--danger); }
 
 .process-grid {
