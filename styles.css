@@ -197,6 +197,17 @@ button, .whatsapp {
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
 button:hover, .whatsapp:hover { transform: translateY(-1px); box-shadow: 0 14px 36px rgba(17,17,15,.18); }
+.support-note {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  color: var(--ink);
+  padding: 15px 18px;
+  font-weight: 700;
+  background: rgba(255,255,255,.42);
+}
 .hidden { display: none; }
 
 .result-card { max-width: 920px; margin-left: auto; margin-right: auto; }
